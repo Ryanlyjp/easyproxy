@@ -30,8 +30,8 @@ listener:
   address: 0.0.0.0      # 监听地址
   port: 2323            # 监听端口
   protocol: http        # 监听协议: http | socks5 | mixed
-  username: username    # 代理认证用户名
-  password: password    # 代理认证密码
+  username: your-username    # 代理认证用户名
+  password: change-me        # 代理认证密码
 
 # ───────────────────────────────────────────────────────────────
 # 代理池配置
@@ -51,8 +51,8 @@ multi_port:
   address: 0.0.0.0      # 监听地址
   base_port: 24000      # 起始端口号
   protocol: http        # 监听协议: http | socks5 | mixed
-  username: mpuser      # 默认认证用户名
-  password: mppass      # 默认认证密码
+  username: your-mp-username  # 默认认证用户名
+  password: change-me         # 默认认证密码
 
 # ───────────────────────────────────────────────────────────────
 # 管理面板配置
@@ -62,7 +62,7 @@ management:
   listen: 0.0.0.0:9888                               # 监听地址
   probe_target: http://cp.cloudflare.com/generate_204  # 健康检查目标
   health_check_interval: 2h                          # 周期健康检查间隔（默认 2 小时）
-  password: "123456"                                       # WebUI 访问密码，为空则不需要密码
+  password: "change-me"                                   # WebUI 访问密码，为空则不需要密码
 
 # ───────────────────────────────────────────────────────────────
 # GeoIP 地域分区配置（可选）
@@ -107,8 +107,8 @@ geoip:
 # 方式 1: 订阅链接（推荐，自动获取并写入 nodes.txt）
 # ───────────────────────────────────────────────────────────────
 subscriptions:
-  - "https://example.com/subscribe?token=xxx"
-#   - "https://another.com/api/v1/client/subscribe?token=yyy"
+  - "https://example.com/subscribe?token=YOUR_TOKEN_HERE"
+#   - "https://another.com/api/v1/client/subscribe?token=YOUR_TOKEN_HERE"
 
 # ───────────────────────────────────────────────────────────────
 # 方式 2: 节点文件（每行一个代理 URI）

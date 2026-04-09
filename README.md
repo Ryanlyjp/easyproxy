@@ -1,153 +1,98 @@
-# EasyProxiesV2
+# easyproxy
 
-EasyProxiesV2 是一个轻量级、高性能的代理池与订阅管理工具，底层基于 [sing-box](https://github.com/SagerNet/sing-box)。
-项目内置现代化 Web 管理面板，支持节点健康检查、订阅刷新、流量监控与可视化管理。
+`easyproxy` 是一个基于 [sing-box](https://github.com/SagerNet/sing-box) 的轻量级代理池与订阅管理工具，包含 Web 管理面板，支持节点管理、订阅刷新、运行状态查看与基础可视化。
 
-> 二开声明：本项目基于 [jasonwong1991/easy_proxies](https://github.com/jasonwong1991/easy_proxies) 二次开发，V2 版本重点重构了前端与工程化流程。
+## 项目说明
 
-## ❤️ 赞助木木
+本仓库是一个**二次开发归档版**，用于保存我们在实际使用过程中修改过的工作树代码。
 
-木木是独立开发者 / 开源爱好者，长期投入开源项目维护与迭代。
-如果 EasyProxiesV2 对你有帮助，或者你认可我的工作，欢迎请我喝杯咖啡。你的支持是我持续创造的动力源泉 ⚡
+- 上游原项目：[`jasonwong1991/easy_proxies`](https://github.com/jasonwong1991/easy_proxies)
+- 当前仓库：基于修改后的工作树重新整理并导出
+- 目的：保留我们自己的修改成果，方便后续备份、迁移与继续维护
 
-- [赞助地址](https://mumuverse.space:1588/)
+> 说明：当前仓库不是直接继承上游 Git 历史的镜像仓库，而是基于现有修改版本重新整理后的独立仓库。
 
----
+## 我们这边保留的主要改动方向
 
-## ✨ 核心特性
+相较于原项目，这个归档版主要保留了以下方向的改动：
 
-- 现代化 Web UI（React + Vite + Tailwind + DaisyUI）
-- 前后端一体化（前端静态资源已内嵌到 Go 二进制，单文件即可运行）
-- 节点订阅与自动刷新
-- 代理池智能调度与故障隔离
+- Web 管理面板增强
+- 多端口 / 多协议使用方式支持
+- 订阅管理与分组能力增强
+- 工程化与构建发布流程调整
+- 运行与管理体验相关改进
+
+## 核心特性
+
+- Web 管理面板
+- 节点订阅与刷新管理
+- 单端口 / 多端口 / 混合模式
 - GeoIP 分区路由（可选）
-- SQLite 持久化存储运行状态与统计数据
+- SQLite 持久化存储
+- Go 后端 + 前端面板集成部署
 
-## 🖼️ 项目预览
+## 使用方式
 
-![项目预览 1](./frontend/public/1.png)
-![项目预览 2](./frontend/public/2.png)
-![项目预览 3](./frontend/public/3.png)
-![项目预览 4](./frontend/public/4.png)
-![项目预览 5](./frontend/public/5.png)
+### 1. 准备配置文件
 
----
+复制示例配置：
 
-## 🚀 最推荐：直接使用 Release 二进制（Linux / Windows）
-
-你不需要本地安装 Go 和 Node，直接下载发布产物即可使用。
-
-### 1) 下载文件
-
-从 GitHub Releases 下载这两个文件之一：
-
-- Linux: `easy-proxies-linux-amd64`
-- Windows: `easy-proxies-windows-amd64.exe`
-
-并同时准备配置文件：
-
-- 将仓库里的 `config.example.yaml` 复制为 `config.yaml`
-- 按需修改端口、账号密码、订阅链接等
-
----
-
-## 🐧 Linux 使用方法
-
-### 1) 赋予执行权限
-```bash
-chmod +x ./easy-proxies-linux-amd64
-```
-
-### 2) 准备配置
 ```bash
 cp ./config.example.yaml ./config.yaml
 ```
 
-### 3) 启动程序
+然后根据自己的环境修改监听端口、认证信息、订阅地址等参数。
+
+### 2. 运行二进制
+
+Linux 示例：
+
 ```bash
-./easy-proxies-linux-amd64 --config ./config.yaml
+chmod +x ./easy-proxies
+./easy-proxies --config ./config.yaml
 ```
 
-### 4) 访问管理面板
-默认访问地址：
-- `http://127.0.0.1:9888`（本机）
-- 或 `http://<服务器IP>:9888`
-- 默认密码：`123456`
-> 默认管理监听来自配置项 `management.listen`，默认值见 `config.example.yaml`。
+### 3. 管理面板
 
----
+默认管理面板监听配置见 `config.example.yaml` 中的 `management.listen`。
 
-## 💻 Windows EXE 使用方法
+## 从源码构建
 
-### 1) 准备文件
-把下面两个文件放到同一目录：
+项目主要由 Go 和前端面板组成。
 
-- `easy-proxies-windows-amd64.exe`
-- `config.yaml`（由 `config.example.yaml` 复制并修改）
+### 构建前端
 
-### 2) 启动程序（PowerShell 或 CMD）
-```powershell
-.\easy-proxies-windows-amd64.exe --config .\config.yaml
-```
-
-### 3) 访问管理面板
-浏览器打开：
-- `http://127.0.0.1:9888`
-
----
-
-## ⚙️ 配置说明（最小必读）
-
-配置模板见 `config.example.yaml`，重点关注：
-
-- `mode`: `pool` / `multi-port` / `hybrid`
-- `listener`: 代理入口监听与认证（新增 `listener.protocol`: `http` / `socks5` / `mixed`）
-- `multi_port`: 多端口入口参数（新增 `multi_port.protocol`: `http` / `socks5` / `mixed`）
-- `management.listen`: Web 管理面板地址（默认 `0.0.0.0:9888`）
-- `management.password`: 面板登录密码（为空则不需要登录）
-- `subscriptions` / `nodes_file` / `nodes`: 节点来源（三选一或混用）
-
----
-
-## 🧪 从源码构建（开发者）
-
-项目由 Go (1.24+) + Node (22+) 构成。
-
-### 1) 构建前端
 ```bash
 cd frontend
 npm ci
 npm run build
 ```
 
-### 2) 构建后端
+### 构建后端
+
 ```bash
 go mod download
 go build -tags "with_utls with_quic with_grpc with_wireguard with_gvisor" -o easy-proxies ./cmd/easy_proxies
 ```
 
----
+## 目录结构
 
-## 📦 Docker（可选）
+- `cmd/easy_proxies/`：Go 程序入口
+- `frontend/`：前端源码
+- `internal/`：核心逻辑
+- `.github/workflows/`：构建与发布流程
 
-如果你偏好容器部署，可使用现成的 `Dockerfile` 与 `docker-compose.yml`：
+## 归档说明
 
-```bash
-docker build -t easy-proxies:latest .
-docker compose up -d
-```
+本仓库当前更偏向于：
 
-## 📁 目录结构简述
+- 保存我们实际修改过的版本
+- 作为云端备份副本
+- 为后续继续维护保留基础
 
-- `cmd/easy_proxies/`: Go 程序入口
-- `frontend/`: 前端源码
-- `internal/`: 后端核心模块
-- `internal/monitor/assets/`: 前端构建产物（会被 Go embed）
-- `.github/workflows/build-and-release.yml`: 自动构建与发布流程
+不保证与上游项目的版本节奏、提交历史或发布策略保持一致。
 
----
+## 致谢
 
-## 🙏 鸣谢
-
-- 原作者 [jasonwong1991/easy_proxies](https://github.com/jasonwong1991/easy_proxies)
-- 核心代理引擎 [sing-box](https://github.com/SagerNet/sing-box)
+- 原作者：[`jasonwong1991/easy_proxies`](https://github.com/jasonwong1991/easy_proxies)
+- 核心代理引擎：[`SagerNet/sing-box`](https://github.com/SagerNet/sing-box)
