@@ -12,6 +12,15 @@ config.yaml
 *.bak
 *.bak.*
 
+# binaries
+/easy-proxies
+*.exe
+*.out
+
 # build outputs
 /dist/
 /build/
+/frontend/dist/
+/internal/monitor/assets/assets/
+/internal/monitor/assets/index.html
+/internal/monitor/assets/vite.svg
