@@ -1,0 +1,17 @@
+# runtime data
+/data/
+*.db
+*.db-*
+*.log
+
+# frontend deps
+/frontend/node_modules/
+
+# local configs / backups
+config.yaml
+*.bak
+*.bak.*
+
+# build outputs
+/dist/
+/build/
